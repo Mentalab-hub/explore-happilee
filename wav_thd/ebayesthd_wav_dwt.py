@@ -38,11 +38,11 @@ def ebayesthd_wav_dwt(x, s_rate=250, a=0.5, bayesfac=False):
     # 2. Wavelet transform
     x_dwt = pywt.wavedecn(x, wavelet='coif4', level=wavLvl, axes=0)
     
-    # 3. Applying hard thresholding rule at each 
+    # 3. Applying hard thresholding rule at each level
     x_thd_dwt = []
     x_thd_dwt.append(x_dwt[0])
     for level in range(1, wavLvl+1, 1):
-        # Apply hard thresholding to the current level's wavelet coefficients
+        # Applying hard thresholding to the current level's wavelet coefficients
         lvl_coefs = x_dwt[level].get("d")
         lvl_coefs = ebayesthd(lvl_coefs, a, bayesfac)
         x_thd_dwt.append({"d": lvl_coefs})
