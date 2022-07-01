@@ -1,19 +1,6 @@
-# from explorepy import filters
 from data_input import ExG_data
 import numpy as np
 import mne
-
-# def lp_filt(ExG_in: ExG_data, cutoff_freq): 
-#     """
-
-#     """
-#     lp_filter = filters.ExGFilter(cutoff_freq, 'lowpass', ExG_in.s_rate, ExG_in.n_chan)
-#     ExGdata_lpf = lp_filter._apply_to_raw_data(ExG_in.ExGdata)
-
-#     ExGout_lpf = ExG_data(ExG_in.file_format, ExGdata_lpf, ExG_in.n_chan, ExG_in.ch_names, ExG_in.s_rate)
-
-#     return ExGout_lpf
-
 
 def lp_filt(ExG_in: ExG_data, cutoff_freq=100):
     ExGdata_lpf = mne.filter.filter_data(ExG_in.ExGdata[1:, :],
@@ -30,4 +17,4 @@ def lp_filt(ExG_in: ExG_data, cutoff_freq=100):
                         ExG_in.ch_names, 
                         ExG_in.s_rate, 
                         ExG_in.ln_freq)
-    return ExG_lpf
+    return(ExG_lpf)

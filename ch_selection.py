@@ -40,6 +40,11 @@ def select(ExG_in: ExG_data):
         n_chan_sel = ExG_in.n_chan
         ch_selected = ExG_in.ch_names
     
-    ExG_sel = ExG_data(ExG_in.file_format, ExGdata_ch_sel, n_chan_sel, ch_selected, ExG_in.s_rate, ExG_in.ln_freq)
+    ExG_sel = ExG_data(ExG_in.file_format, 
+                        ExGdata_ch_sel, 
+                        n_chan_sel, 
+                        ch_selected, 
+                        ExG_in.s_rate, 
+                        ExG_in.ln_freq)
 
-    return ExG_sel
+    return(ExG_sel)

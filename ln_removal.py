@@ -1,19 +1,6 @@
-# from explorepy import filters
 from data_input import ExG_data
 import numpy as np
 import mne
-
-# def notch_filt(ExG_in: ExG_data): 
-#     """
-    
-#     """
-#     ln_filter = filters.ExGFilter(ExG_in.ln_freq, 'notch', ExG_in.s_rate, ExG_in.n_chan)
-#     ExGdata_ln_rm = ln_filter._apply_to_raw_data(ExG_in.ExGdata)
-
-#     ExGout_ln_rm = ExG_data(ExG_in.file_format, ExGdata_ln_rm, ExG_in.n_chan, ExG_in.ch_names, ExG_in.s_rate)
-
-#     return ExGout_ln_rm
-
 
 def clean_ln(ExG_in: ExG_data):
     """
@@ -23,9 +10,10 @@ def clean_ln(ExG_in: ExG_data):
     Returns:
         ExG_ln_rm   : procesed ExG data, line noise removed
     """
-    # the frequencies to filter, up to s_rate / 2 (half the sampling rate)
+    # the frequencies to filter: line frequency and harmonics, up to s_rate / 2 (half the sampling rate)
     ln_freqs = np.arange(ExG_in.ln_freq, ExG_in.s_rate/2, ExG_in.ln_freq)
 
+    # Removing line noise
     ExGdata_ln_rm = mne.filter.notch_filter( ExG_in.ExGdata[1:, :],
                                     Fs = ExG_in.s_rate,
                                     freqs = ln_freqs,
@@ -43,7 +31,4 @@ def clean_ln(ExG_in: ExG_data):
                         ExG_in.ch_names, 
                         ExG_in.s_rate, 
                         ExG_in.ln_freq)
-    return ExG_ln_rm
-
-
-
+    return(ExG_ln_rm)
