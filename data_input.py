@@ -24,11 +24,11 @@ class ExG_data():
         """
         Plots the ExG data stored in the self.ExGdata numpy array
         """
-        fig, axs = plt.subplots(self.n_chan, sharex=True, sharey=False)
+        fig, ax = plt.subplots(self.n_chan, sharex=True, sharey=False)
 
-        SMALL_SIZE = 20
-        MEDIUM_SIZE = 22
-        BIGGER_SIZE = 24
+        SMALL_SIZE = 18
+        MEDIUM_SIZE = 20
+        BIGGER_SIZE = 22
         plt.rc('font', size = SMALL_SIZE)          # controls default text sizes
         plt.rc('axes', titlesize = SMALL_SIZE)     # fontsize of the axes title
         plt.rc('xtick', labelsize = SMALL_SIZE)    # fontsize of the tick labels
@@ -40,14 +40,20 @@ class ExG_data():
         plt.rc('legend', fontsize = SMALL_SIZE)    # legend fontsize
         """
         
-        plt.rcParams['figure.figsize'] = [30, 15]
+        plt.rcParams['figure.figsize'] = [28, 5*self.n_chan]
         plt.rcParams['figure.dpi'] = 100
         
         fig.suptitle('ExG data')
-        for i in range(self.n_chan):
-            axs[i].set_ylabel(self.ch_names[i])
-            axs[i].set_yticks([])
-            axs[i].plot(self.ExGdata[0, :], self.ExGdata[i+1, :])
+        if (self.n_chan == 1):
+            ax.set_ylabel(self.ch_names[0])
+            ax.set_yticks([])
+            ax.plot(self.ExGdata[0,:], self.ExGdata[1, :])
+        else:
+            for i in range(0, self.n_chan, 1):
+                ax[i].set_ylabel(self.ch_names[i])
+                ax[i].set_yticks([])
+                ax[i].plot(self.ExGdata[0,:], self.ExGdata[i+1, :])
+        
 
     
     def plot_ExGdata_psd(self):
@@ -62,7 +68,7 @@ class ExG_data():
 
 def in_file_format():
     """
-    Asks the user for the file format:
+    Asks the user for the file format:  
         1 - .csv
         2 - .edf
     """
@@ -78,7 +84,8 @@ def in_file_format():
 def in_ExGdata(file_format):
     """
     Asks the user for the path to the recorded ExG data and
-    Loads the ExG data as a numpy array
+    Loads the ExG data as a numpy array  
+
     Returns:
         ExGdata : numpy array containing the recorded ExG data 
                     (   ExGdata[0, :]: Timestamps
@@ -93,7 +100,7 @@ def in_ExGdata(file_format):
         else:
             break
     
-    if file_format == 1:
+    if file_format == 1: # file format: 1 - .csv
         ExGdata = np.transpose( np.genfromtxt(file_path, delimiter = ',') )
         ExGdata = ExGdata[:, 1:]
         ExGdata[0] = ExGdata[0] - ExGdata[0][0] # timestamp starts at 0s
@@ -110,7 +117,8 @@ def in_ExGdata(file_format):
 
 def get_n_chan(ExGdata: np.array):
     """
-    Detects the number of recorded channels from the loaded file (ExGdata)
+    Detects the number of recorded channels from the loaded file (ExGdata)  
+
     Args:
         ExGdata : numpy array containing the recorded ExG data
     """
@@ -121,7 +129,8 @@ def get_n_chan(ExGdata: np.array):
 
 def in_ch_names(n_chan):
     """
-    Asks the user for each channel name.
+    Asks the user for each channel name.  
+
     Args:
         n_chan  : number of channels recorded
     """
@@ -134,7 +143,8 @@ def in_ch_names(n_chan):
 
 def get_s_rate(ExGdata: np.array):
     """
-    Detects the sampling rate from the loaded file (ExGdata)
+    Detects the sampling rate from the loaded file (ExGdata)  
+
     Args:
         ExGdata : numpy array containing the recorded ExG data
     Returns:
