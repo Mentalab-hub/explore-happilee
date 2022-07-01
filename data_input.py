@@ -43,11 +43,20 @@ class ExG_data():
         plt.rcParams['figure.figsize'] = [30, 15]
         plt.rcParams['figure.dpi'] = 100
         
-        fig.suptitle('EEG data')
+        fig.suptitle('ExG data')
         for i in range(self.n_chan):
-            axs[i].set_ylabel(self.ch_names[i] + " (ch"+ str(i+1) + ")")
+            axs[i].set_ylabel(self.ch_names[i])
             axs[i].set_yticks([])
             axs[i].plot(self.ExGdata[0, :], self.ExGdata[i+1, :])
+
+    
+    def plot_ExGdata_psd(self):
+        """
+        Plots the power spectrum density of the ExG data stored in the self.ExGdata numpy array
+        """
+        for channel in range(1, np.shape(self.ExGdata)[0]):
+            plot_psd(self.ExGdata[channel], self.ExGdata[0], self.s_rate, ch_name=self.ch_names[channel-1])
+
         
 
 
@@ -63,20 +72,7 @@ def in_file_format():
             print("Invalid input: please enter 1 or 2.\n")
         else:
             break
-    return int(file_format)
-
-
-# def in_num_of_ch(self):
-#     """
-#     Asks the user for the number of channels (1-8)
-#     """
-#     while True:
-#         num_of_ch = input("""Number of channels (1-8):\n""")
-#         if int(num_of_ch) not in range(1,9):
-#             print("Invalid input: please enter a number from 1-8.\n")
-#         else:
-#             break
-#     return num_of_ch
+    return(int(file_format))
 
 
 def in_ExGdata(file_format):
@@ -109,8 +105,7 @@ def in_ExGdata(file_format):
     elif file_format == 2: # file format: 2 - .edf
         pass
     
-    return ExGdata
-
+    return(ExGdata)
 
 
 def get_n_chan(ExGdata: np.array):
@@ -121,7 +116,7 @@ def get_n_chan(ExGdata: np.array):
     """
     n_chan = ExGdata.shape[0] - 1
 
-    return n_chan 
+    return(n_chan) 
 
 
 def in_ch_names(n_chan):
@@ -134,7 +129,7 @@ def in_ch_names(n_chan):
     for i in range(n_chan):
         ch_name = input("Input the name for channel " + str(i+1) + ":\n")
         ch_names.append(ch_name)
-    return ch_names
+    return(ch_names)
 
 
 def get_s_rate(ExGdata: np.array):
@@ -154,9 +149,49 @@ def get_s_rate(ExGdata: np.array):
     else: 
         s_rate = 1000
 
-    return s_rate
+    return(s_rate)
 
 
 def in_ln_freq():
+    """
+    Asks the user for the line frequency.
+    """
     ln_freq = int(input("Input the frequency of the line noise:\n"))
-    return ln_freq
+    return(ln_freq)
+
+
+def plot_psd (signal: np.array, t: np.array, s_rate, ch_name):
+    """
+    Plots the signal along with the power spectrum density of the signal stored in array.
+    """
+    # Commputing Fourier Transform
+    n = len(t)
+    dt = 1/s_rate
+    fhat = np.fft.fft(signal, n) # computes the fft
+    psd = fhat * np.conj(fhat)/n
+    freq = (1/(dt*n)) * np.arange(n) # frequency array
+    idxs_half = np.arange(1, np.floor(n/2), dtype=np.int32) # first half index
+
+    SMALL_SIZE = 18
+    MEDIUM_SIZE = 20
+    BIGGER_SIZE = 22
+    plt.rc('font', size = SMALL_SIZE)          # controls default text sizes
+    plt.rc('axes', titlesize = SMALL_SIZE)     # fontsize of the axes title
+    plt.rc('xtick', labelsize = SMALL_SIZE)    # fontsize of the tick labels
+    plt.rc('figure', titlesize = BIGGER_SIZE)  # fontsize of the figure title
+    plt.rc('axes', labelsize = MEDIUM_SIZE)    # fontsize of the x and y labels 
+
+    fig, ax = plt.subplots(2,1)
+    plt.rcParams['figure.figsize'] = [28, 10]
+
+    ax[0].plot(t, signal, color='b', lw=0.5, label='Signal '+ch_name)
+    ax[0].set_ylim([signal.min(), signal.max()])
+    ax[0].set_xlabel('Time')
+    ax[0].legend()
+
+    ax[1].plot(freq[idxs_half], np.abs(psd[idxs_half]), color='b', lw=1, label='PSD '+ch_name)
+    ax[1].set_xlabel('Frequencies in Hz')
+    ax[1].set_ylabel('Amplitude')
+    ax[1].legend()
+
+
