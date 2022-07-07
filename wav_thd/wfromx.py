@@ -22,7 +22,7 @@ def wfromx(x, s=1, prior="cauchy", a=0.5, universalthd = True):
     Given the data array x and standard deviation s, 
     Finds the value of w that zeroes S(w) in the range by 
     successive bisection, carrying out n_iter harmonic bisections of the
-    original interval between wlo and 1.
+    original interval between w_lo and 1.
     """
     n_iter = 30
     

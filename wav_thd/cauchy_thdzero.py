@@ -21,7 +21,7 @@ def cauchy_thdzero(z, w):
     
     Args:
         z       : putative threshold array
-        w       : weighat value or array of weight values
+        w       : weight value or array of weight values
     """
     y = norm.cdf(z, loc=0, scale=1) - z * norm.pdf(z, loc=0, scale=1) - 1/2 - (z**2 * np.exp(-z**2 / 2) * (1/w - 1)) / 2
     return(y)

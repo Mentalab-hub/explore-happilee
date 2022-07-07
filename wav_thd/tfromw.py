@@ -56,7 +56,7 @@ def tfromw(w, s=1, prior="cauchy", bayesfac=False, a=0.5):
             zz = np.resize(z, max(len(s), len(w)))
 
             # When (x/s - s*a > 25), laplace_thdzero has value close to 1/2.
-            # The baundary value of x can be treated as the upper bound for search.
+            # The boundary value of x can be treated as the upper bound for search.
             tt = vecbinsolv(zf=zz, func=laplace_thdzero, t_lo=0, t_hi=s * (25 + s*a),
                             s=s, w=w, a=a)
         
