@@ -19,14 +19,7 @@ from wav_thd.ebayesthd_wav_dwt import ebayesthd_wav_dwt
 
 def wav_thresholding(ExG_in: ExG_data):
     """
-    Subjects the signal to wavelet thresholding.
-    The wavelet thresholding step used here is a Python implementation of the wdenoise
-    function from the Matlab Wavelet Toolbox as used in the HAPPILEE pipeline.
-    (Level dependent hard thresholding with Bayes thresholding method)
-
-    The empirical Bayes method used is a Python implementation of the R package:
-        Silverman, B. (2012) EbayesThresh: Empirical Bayes Thresholding and
-        Related Methods, http://CRAN.R-project.org/package=EbayesThresh.
+    Subjects the data in ExG_in.ExGdata to wavelet thresholding.
 
     Args:
         ExG_in      : the ExG data to be processed
@@ -50,3 +43,23 @@ def wav_thresholding(ExG_in: ExG_data):
                         ExG_in.ln_freq)
     
     return(ExG_wav_thd)
+
+
+def wav_thresholding_ch(ExG_in_ch: np.array, s_rate):
+    """
+    Subjects the signal to wavelet thresholding,
+    Applied to 1 channel in an array.
+    
+    Args:
+        ExG_in_ch       : numpy array containing ExG data (for 1 channel)
+        s_rate          : sampling rate
+    Returns:
+        ExG_wav_thd_ch  : procesed ExG data, artifacts removed
+    """
+    # Applying wavelet thresholding to signal from each channel 
+    artifacts = ebayesthd_wav_dwt(ExG_in_ch, s_rate)
+    
+    # Denoised signal
+    ExGdata_wav_thd_ch = ExG_in_ch - artifacts
+
+    return(ExGdata_wav_thd_ch)
