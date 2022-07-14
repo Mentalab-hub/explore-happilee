@@ -46,7 +46,7 @@ def clean_ln_ch(ExG_in_ch: np.array, ln_freq, s_rate):
         ln_Freq         : frequency of the line noise
         s_rate          : sampling rate
     Returns:
-        ExG_lnrm_ch    : procesed ExG data, line noise removed
+        ExGdata_lnrm_ch : procesed ExG data, line noise removed
     """
     # the frequencies to filter: line frequency and harmonics, up to s_rate / 2 (half the sampling rate)
     ln_freqs = np.arange(ln_freq, s_rate/2, ln_freq)
@@ -58,5 +58,5 @@ def clean_ln_ch(ExG_in_ch: np.array, ln_freq, s_rate):
                                     method = "spectrum_fit",
                                     mt_bandwidth = 2,
                                     p_value = 0.01,
-                                    filter_length = "4s")
+                                    filter_length = "2s")
     return(ExGdata_lnrm_ch)
