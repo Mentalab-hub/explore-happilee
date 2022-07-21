@@ -1,6 +1,7 @@
 import numpy as np
 import os.path
 import matplotlib.pyplot as plt
+from plotting import plot_psd
 
 class ExG_data():
     """
@@ -168,40 +169,3 @@ def in_ln_freq():
     """
     ln_freq = int(input("Input the frequency of the line noise:\n"))
     return(ln_freq)
-
-
-def plot_psd (signal: np.array, t: np.array, s_rate, ch_name):
-    """
-    Plots the signal along with the power spectrum density of the signal stored in array.
-    """
-    # Commputing Fourier Transform
-    n = len(t)
-    dt = 1/s_rate
-    fhat = np.fft.fft(signal, n) # computes the fft
-    psd = fhat * np.conj(fhat)/n
-    freq = (1/(dt*n)) * np.arange(n) # frequency array
-    idxs_half = np.arange(1, np.floor(n/2), dtype=np.int32) # first half index
-
-    SMALL_SIZE = 18
-    MEDIUM_SIZE = 20
-    BIGGER_SIZE = 22
-    plt.rc('font', size = SMALL_SIZE)          # controls default text sizes
-    plt.rc('axes', titlesize = SMALL_SIZE)     # fontsize of the axes title
-    plt.rc('xtick', labelsize = SMALL_SIZE)    # fontsize of the tick labels
-    plt.rc('figure', titlesize = BIGGER_SIZE)  # fontsize of the figure title
-    plt.rc('axes', labelsize = MEDIUM_SIZE)    # fontsize of the x and y labels 
-
-    fig, ax = plt.subplots(2,1)
-    plt.rcParams['figure.figsize'] = [28, 10]
-
-    ax[0].plot(t, signal, color='b', lw=0.5, label='Signal '+ch_name)
-    ax[0].set_ylim([signal.min(), signal.max()])
-    ax[0].set_xlabel('Time')
-    ax[0].legend()
-
-    ax[1].plot(freq[idxs_half], np.abs(psd[idxs_half]), color='b', lw=1, label='PSD '+ch_name)
-    ax[1].set_xlabel('Frequencies in Hz')
-    ax[1].set_ylabel('Amplitude')
-    ax[1].legend()
-
-
