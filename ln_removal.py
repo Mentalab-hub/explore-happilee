@@ -58,5 +58,5 @@ def clean_ln_ch(ExG_in_ch: np.array, ln_freq, s_rate):
                                     method = "spectrum_fit",
                                     mt_bandwidth = 2,
                                     p_value = 0.01,
-                                    filter_length = "2s")
+                                    filter_length = "4s")
     return(ExGdata_lnrm_ch)
