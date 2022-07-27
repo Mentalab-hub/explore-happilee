@@ -18,3 +18,8 @@
     * data_input
     * numpy
     * wav_thd
+* wav_thd
+    * numpy
+    * pywt
+    * scipy.stats
+    * statsmodels.robust.scale
