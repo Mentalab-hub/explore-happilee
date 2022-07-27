@@ -1,0 +1,20 @@
+### Dependencies
+* data_input.py
+    * numpy
+    * os.path
+    * matplotlib.pyplot
+* ch_selection.py
+    * data_input
+    * numpy
+* ln_removal.py
+    * data_input
+    * numpy
+    * mne
+* filtering.py
+    * data_input
+    * numpy
+    * mne
+* wav_thresholding.py
+    * data_input
+    * numpy
+    * wav_thd
