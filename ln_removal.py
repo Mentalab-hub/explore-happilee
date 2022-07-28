@@ -4,7 +4,10 @@ import mne
 
 def clean_ln(ExG_in: ExG_data):
     """
-    Removes the line noise in the ExG data using CleanLineNoise method (from the PREP pipeline [Bigdely-Shamlo, et.al, 2015])
+    Removes the line noise in the ExG data using CleanLineNoise method from the PREP pipeline
+        (Bigdely-Shamlo N, Mullen T, Kothe C, Su K-M and Robbins KA (2015)
+         The PREP pipeline: standardized preprocessing for large-scale EEG analysis
+         https://doi.org/10.3389/fninf.2015.00016)
     Applied to all channels in ExG_in.ExGdata
 
     Args:
@@ -38,7 +41,10 @@ def clean_ln(ExG_in: ExG_data):
 
 def clean_ln_ch(ExG_in_ch: np.array, ln_freq, s_rate):
     """
-    Removes the line noise in the ExG data using CleanLineNoise method (from the PREP pipeline [Bigdely-Shamlo, et.al, 2015])
+    Removes the line noise in the ExG data using CleanLineNoise method from the PREP pipeline
+        (Bigdely-Shamlo N, Mullen T, Kothe C, Su K-M and Robbins KA (2015)
+         The PREP pipeline: standardized preprocessing for large-scale EEG analysis
+         https://doi.org/10.3389/fninf.2015.00016)
     Applied to 1 channel in an array
 
     Args:
