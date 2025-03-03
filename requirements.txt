@@ -1,0 +1,7 @@
+    numpy
+    matplotlib
+    mne
+    PyWavelets
+    scipy
+    statsmodels
+    explorepy

@@ -38,20 +38,20 @@ def vecbinsolv(zf, func, t_lo, t_hi, n_iter=30, **kwargs):
         n_iter  : number of iterations
     """
     if isinstance(zf, int) or isinstance(zf, float):
-        z_f = np.float(zf)
+        z_f = np.float64(zf)
         z_f = np.array([zf])
         nz = len(z_f)
     else:
         nz = len(zf)
     
     if isinstance(t_lo, int) or isinstance(t_lo, float) or (len(t_lo)==1):
-        t_lo = np.float(t_lo)
+        t_lo = np.float64(t_lo)
         t_lo = np.resize(t_lo, nz)
     elif (len(t_lo)!=nz):
         sys.exit("Lower constraint has to be homogeneous or has the same length as function")
     
     if isinstance(t_hi, int) or isinstance(t_hi, float) or (len(t_hi)==1):
-        t_hi = np.float(t_hi)
+        t_hi = np.float64(t_hi)
         t_hi = np.resize(t_hi, nz)
     elif (len(t_hi)!=nz):
         sys.exit("Upper constraint has to be homogeneous or has the same length as function")

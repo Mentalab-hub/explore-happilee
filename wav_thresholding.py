@@ -45,21 +45,20 @@ def wav_thresholding(ExG_in: ExG_data):
     return(ExG_wav_thd)
 
 
-def wav_thresholding_ch(ExG_in_ch: np.array, s_rate):
+def wav_thresholding_ch(ExG_in_data: np.array, s_rate):
     """
-    Subjects the signal to wavelet thresholding,
-    Applied to 1 channel in an array.
+    Subjects the data to wavelet thresholding for each channel in ExG_in_data.
     
     Args:
-        ExG_in_ch       : numpy array containing ExG data (for 1 channel)
-        s_rate          : sampling rate
+        ExG_in_data : 2D numpy array of shape (n_channels, n_samples)
+        s_rate      : Sampling rate
     Returns:
-        ExG_wav_thd_ch  : procesed ExG data, artifacts removed
+        ExG_wav_thd : 2D numpy array with wavelet-thresholded data for each channel
     """
-    # Applying wavelet thresholding to signal from each channel 
-    artifacts = ebayesthd_wav_dwt(ExG_in_ch, s_rate)
+    ExG_wav_thd = []
+    for ch in range(ExG_in_data.shape[0]):
+        artifacts = ebayesthd_wav_dwt(ExG_in_data[ch], s_rate)
+        denoised_signal = ExG_in_data[ch] - artifacts
+        ExG_wav_thd.append(denoised_signal)
     
-    # Denoised signal
-    ExGdata_wav_thd_ch = ExG_in_ch - artifacts
-
-    return(ExGdata_wav_thd_ch)
+    return np.array(ExG_wav_thd)

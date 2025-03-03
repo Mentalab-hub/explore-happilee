@@ -65,6 +65,31 @@ class ExG_data():
             plot_psd(self.ExGdata[channel], self.ExGdata[0], self.s_rate, ch_name=self.ch_names[channel-1])
 
         
+    def save_to_csv(self, file_path):
+        """
+        Saves the ExGdata array to a CSV file.
+        The timestamp column is shown with four decimals,
+        while channel values columns are limited to two decimals.
+
+        Args:
+            file_path : path to save the CSV file
+        """
+        temp_data = self.ExGdata.copy()
+        temp_data[0, :] = np.round(temp_data[0, :], 4)
+        
+        header = "TimeStamp," + ",".join(self.ch_names)
+        
+        # Format: first column (timestamp) with 4 decimals, others with 2 decimals
+        formats = ['%.4f'] + ['%.2f'] * (temp_data.shape[0] - 1)
+        
+        np.savetxt(
+            file_path,
+            temp_data.T,
+            delimiter=',',
+            header=header,
+            comments='',
+            fmt=formats
+        )
 
 
 def in_file_format():

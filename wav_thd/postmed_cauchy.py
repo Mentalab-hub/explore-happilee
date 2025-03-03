@@ -26,7 +26,7 @@ def postmed_cauchy(x, w):
         w       : weight value
     """
     if isinstance(x, int) or isinstance(x, float):
-        x = np.float(x)
+        x = np.float64(x)
         x = np.array([x])
     nx = len(x)
     z_est = np.resize(np.nan, nx)

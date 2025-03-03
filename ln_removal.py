@@ -39,30 +39,41 @@ def clean_ln(ExG_in: ExG_data):
     return(ExG_lnrm)
 
 
-def clean_ln_ch(ExG_in_ch: np.array, ln_freq, s_rate):
+def clean_ln_ch(ExG_in: np.ndarray, ln_freq: float, s_rate: float):
     """
-    Removes the line noise in the ExG data using CleanLineNoise method from the PREP pipeline
-        (Bigdely-Shamlo N, Mullen T, Kothe C, Su K-M and Robbins KA (2015)
-         The PREP pipeline: standardized preprocessing for large-scale EEG analysis
-         https://doi.org/10.3389/fninf.2015.00016)
-    Applied to 1 channel in an array
+    Removes line noise for single or multiple channels using the CleanLineNoise method
+    from the PREP pipeline. Automatically handles 1D (single channel) or 2D (multi-channel) input.
 
     Args:
-        ExG_in_ch       : numpy array containing ExG data (for 1 channel)
-        ln_Freq         : frequency of the line noise
-        s_rate          : sampling rate
-    Returns:
-        ExGdata_lnrm_ch : procesed ExG data, line noise removed
-    """
-    # the frequencies to filter: line frequency and harmonics, up to s_rate / 2 (half the sampling rate)
-    ln_freqs = np.arange(ln_freq, s_rate/2, ln_freq)
+        ExG_in   : NumPy array of shape (n_samples,) for single channel,
+                   or (n_channels, n_samples) for multi-channel.
+        ln_freq  : Frequency of the line noise.
+        s_rate   : Sampling rate in Hz.
 
-    # Removing line noise
-    ExGdata_lnrm_ch = mne.filter.notch_filter( ExG_in_ch,
-                                    Fs = s_rate,
-                                    freqs = ln_freqs,
-                                    method = "spectrum_fit",
-                                    mt_bandwidth = 2,
-                                    p_value = 0.01,
-                                    filter_length = "4s")
-    return(ExGdata_lnrm_ch)
+    Returns:
+        ExGdata_lnrm : Processed ExG data with line noise removed,
+                       having the same shape as ExG_in.
+    """
+    ln_freqs = np.arange(ln_freq, s_rate / 2, ln_freq)
+
+    # If single-channel data is passed in 1D shape, reshape to 2D
+    single_channel = False
+    if ExG_in.ndim == 1:
+        ExG_in = ExG_in[np.newaxis, :]
+        single_channel = True
+
+    ExGdata_lnrm = mne.filter.notch_filter(
+        ExG_in,
+        Fs=s_rate,
+        freqs=ln_freqs,
+        method="spectrum_fit",
+        mt_bandwidth=2,
+        p_value=0.01,
+        filter_length="4s"
+    )
+
+    # Reshape back to 1D if the original input was single-channel
+    if single_channel:
+        ExGdata_lnrm = ExGdata_lnrm.flatten()
+
+    return ExGdata_lnrm

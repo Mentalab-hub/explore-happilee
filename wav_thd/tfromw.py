@@ -33,10 +33,10 @@ def tfromw(w, s=1, prior="cauchy", bayesfac=False, a=0.5):
     """
     
     if isinstance(w, int) or isinstance(w, float):
-        w = np.float(w)
+        w = np.float64(w)
         w = np.array([w])
     if isinstance(s, int) or isinstance(s, float):
-        s = np.float(s)
+        s = np.float64(s)
         s = np.array([s])
     
     if (bayesfac):
