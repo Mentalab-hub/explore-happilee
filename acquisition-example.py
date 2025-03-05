@@ -8,7 +8,7 @@ from explorepy import filters
 import argparse
 import numpy as np
 from ln_removal import clean_ln_ch
-from filtering import lp_filt_ch
+from filtering import lp_filt_ch, hp_filt_ch
 from wav_thresholding import wav_thresholding_ch
 import csv
 
@@ -37,7 +37,8 @@ def noise_removal(packet):
     if exg_data_in.shape[1] > EXG_DATA_BUFFER_SIZE:
         exg_lnrm = clean_ln_ch(exg_data_in, LN_FREQ, S_RATE)
         exg_lpf = lp_filt_ch(exg_lnrm, S_RATE)
-        exg_wav_thd = wav_thresholding_ch(exg_lpf, S_RATE)
+        exg_hpf = hp_filt_ch(exg_lpf, S_RATE)
+        exg_wav_thd = wav_thresholding_ch(exg_hpf, S_RATE)
         print(exg_data_in, "---", exg_wav_thd)
 
         # Write filtered data to CSV
