@@ -31,9 +31,9 @@ Visualization of the filtered data:
 
 ![Wavelet Thresholding Data](ExG_data/demo/wav-th-plot.png)
 
-5- Results
+## 5- Results
 
-A 50 Hz notch filter successfully reduced line noise, improving overall signal clarity. The combination of a 1 Hz high-pass and a 30 Hz low-pass filter further removed baseline drifts and high-frequency artifacts. Wavelet thresholding was then applied to eliminate remaining transient artifacts and enhance the overall signal quality, ultimately yielding a clean dataset well-suited for downstream analyses. The entire pipeline was successfully implemented in our setup, demonstrating its effectiveness for optimized ExG signal pre-processing.
+The pipeline was successfully implemented in our setup, demonstrating its effectiveness for optimized ExG signal pre-processing.
 
 
 

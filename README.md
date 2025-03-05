@@ -8,6 +8,10 @@ Further tests and trials on different artifacts are available in `testing.ipynb`
 Noise removal is applied in real time to the data stream from the Explore device in `acquisition_example.py`.
 
 ![Happilee Pipeline](assets/happilee_pipeline.png)
+[Figure Source](https://www.plasticityinneurodevelopmentlab.com/happilee-lowdensity-eeg)
+
+*Steps of the pipeline included in our implementation are marked in a red rectange in the figure above.*
+
 
 ## Steps of the HAPPILEE pipeline covered in this implementation:
 1. **Channel Selection**  
@@ -58,6 +62,8 @@ To use HAPPILEE with your Explore device, follow these steps:
      Example input: `50`
 
    **Online Mode**
+
+    Online mode example outputs a csv file (with the name `filtered_exg_data.csv`) containing the results of the HAPPILEE pipeline applied to the data stream from the Explore device.
 
    ```bash
    python acquisition_example.py --name <device_name>

@@ -30,31 +30,25 @@ class ExG_data():
         SMALL_SIZE = 18
         MEDIUM_SIZE = 20
         BIGGER_SIZE = 22
-        plt.rc('font', size = SMALL_SIZE)          # controls default text sizes
-        plt.rc('axes', titlesize = SMALL_SIZE)     # fontsize of the axes title
-        plt.rc('xtick', labelsize = SMALL_SIZE)    # fontsize of the tick labels
-        plt.rc('figure', titlesize = BIGGER_SIZE)  # fontsize of the figure title
-        plt.rc('axes', labelsize = MEDIUM_SIZE)    # fontsize of the x and y labels 
+        plt.rc('font', size=SMALL_SIZE)          # controls default text sizes
+        plt.rc('axes', titlesize=SMALL_SIZE)     # fontsize of the axes title
+        plt.rc('xtick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
+        plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
+        plt.rc('axes', labelsize=MEDIUM_SIZE)    # fontsize of the x and y labels
 
-        """
-        plt.rc('ytick', labelsize = SMALL_SIZE)    # fontsize of the tick labels
-        plt.rc('legend', fontsize = SMALL_SIZE)    # legend fontsize
-        """
-        
         plt.rcParams['figure.figsize'] = [28, 5*self.n_chan]
         plt.rcParams['figure.dpi'] = 100
-        
+
         fig.suptitle('ExG data')
-        if (self.n_chan == 1):
-            ax.set_ylabel(self.ch_names[0])
-            ax.set_yticks([])
-            ax.plot(self.ExGdata[0,:], self.ExGdata[1, :])
+        if self.n_chan == 1:
+            ax.set_ylabel(f"{self.ch_names[0]} (mV)")
+            ax.plot(self.ExGdata[0, :], self.ExGdata[1, :])
+            ax.set_xlabel("Time (s)")
         else:
-            for i in range(0, self.n_chan, 1):
-                ax[i].set_ylabel(self.ch_names[i])
-                ax[i].set_yticks([])
-                ax[i].plot(self.ExGdata[0,:], self.ExGdata[i+1, :])
-        
+            for i in range(self.n_chan):
+                ax[i].set_ylabel(f"{self.ch_names[i]} (mV)")
+                ax[i].plot(self.ExGdata[0, :], self.ExGdata[i+1, :])
+            ax[-1].set_xlabel("Time (s)")
 
     
     def plot_ExGdata_psd(self):
