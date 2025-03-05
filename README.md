@@ -21,6 +21,11 @@ Noise removal is applied in real time to the data stream from the Explore device
 
 These steps and evaluation results covered in the [evaluation.md](evaluation.md) file.
 
+## Example Result
+
+*Figure below displays the results after applying wav thresholding.*
+
+![Example Result](assets/wav-diff.png)
 ## Installation and Setup
 
 To use HAPPILEE with your Explore device, follow these steps:
