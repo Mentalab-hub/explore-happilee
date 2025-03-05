@@ -46,3 +46,53 @@ def lp_filt_ch(ExG_in_ch: np.array, s_rate, cutoff_freq=100):
                                     h_freq = cutoff_freq,
                                     l_freq = None)
     return(ExGdata_lpf_ch)
+
+def hp_filt(ExG_in: ExG_data, cutoff_freq=1):
+    """
+    Applies high-pass filtering with a default cutoff frequency of 1 Hz,
+    applied to all channels in ExG_in.ExGdata
+
+    Args:
+        ExG_in      : the ExG data to be processed
+        cutoff_freq : cutoff frequency
+    Returns:
+        ExG_hpf     : processed ExG data, high-pass filtered
+    """
+    ExGdata_hpf = mne.filter.filter_data(
+        ExG_in.ExGdata[1:, :],
+        sfreq=ExG_in.s_rate,
+        l_freq=cutoff_freq,
+        h_freq=None
+    )
+    tmp = ExG_in.ExGdata[0, :]
+    ExGdata_hpf = np.transpose(np.c_[tmp, np.transpose(ExGdata_hpf)])
+
+    ExG_hpf = ExG_data(
+        ExG_in.file_format, 
+        ExGdata_hpf,
+        ExG_in.n_chan,
+        ExG_in.ch_names,
+        ExG_in.s_rate,
+        ExG_in.ln_freq
+    )
+    return ExG_hpf
+
+def hp_filt_ch(ExG_in_ch: np.array, s_rate, cutoff_freq=1):
+    """
+    Applies high-pass filtering with a default cutoff frequency of 1 Hz,
+    applied to a single channel in an array
+
+    Args:
+        ExG_in_ch       : numpy array containing ExG data (1 channel)
+        s_rate          : sampling rate
+        cutoff_freq     : cutoff frequency
+    Returns:
+        ExG_hpf_ch      : processed ExG data, high-pass filtered
+    """
+    ExGdata_hpf_ch = mne.filter.filter_data(
+        ExG_in_ch,
+        sfreq=s_rate,
+        l_freq=cutoff_freq,
+        h_freq=None
+    )
+    return ExGdata_hpf_ch

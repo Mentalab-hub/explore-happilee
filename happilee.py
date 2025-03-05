@@ -29,12 +29,16 @@ def main():
     # Apply the HAPPILEE pipeline
     # Select channels
     ExG_sel = ch_selection.select(A)
+    ExG_wav_thd.save_to_csv('out_ExG_raw.csv')
 
     # Remove line noise
     ExG_ln_rm = ln_removal.clean_ln(ExG_sel)
 
-    # Apply low-pass filter 100 Hz
-    ExG_lpf = filtering.lp_filt(ExG_ln_rm)
+    # Apply low-pass filter 30 Hz
+    ExG_lpf = filtering.lp_filt(ExG_ln_rm, 30)
+
+    # Apply high-pass filter 1 Hz
+    ExG_lpf = filtering.hp_filt(ExG_ln_rm, 1)
 
     # Apply wavelet thresholding
     ExG_wav_thd = wav_thresholding(ExG_lpf)
