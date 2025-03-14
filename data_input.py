@@ -2,6 +2,7 @@ import numpy as np
 import os.path
 import matplotlib.pyplot as plt
 from plotting import plot_psd
+import mne
 
 class ExG_data():
     """
@@ -130,7 +131,11 @@ def in_ExGdata(file_format):
             # ...
     
     elif file_format == 2: # file format: 2 - .edf
-        pass
+        raw = mne.io.read_raw_edf(file_path, preload=True)
+        # Get data up to 10 seconds
+        data, times = raw[:, :int(10 * raw.info['sfreq'])]  # Limit to first 10 seconds
+        ExGdata = np.vstack((times, data))
+        ExGdata[0] = ExGdata[0] - ExGdata[0][0]  # timestamp starts at 0s
     
     return(ExGdata)
 
